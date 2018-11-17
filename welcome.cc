@@ -38,7 +38,7 @@ int main(int argc, char**argv)
   //Prints welcome message...
   char *a;
 
-  
+  //new comment 
   //Prints arguments...
   if (argc > 1 && (int)argv[1]>0)
    {
