@@ -31,6 +31,13 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <fstream>
+
+char* strChar(char *_in, int _pos, char _ch)
+{
+  _in[_pos]=_ch;
+  return _in;
+}
 
 
 int main(int argc, char**argv)
@@ -38,12 +45,18 @@ int main(int argc, char**argv)
   //Prints welcome message...
   char *a;
 
+
   //Prints arguments...
   if (argc > 1 && (int)argv[1]>0)
    {
+     std::ifstream dic("simbols.dic", std::ifstream::binary);
+     std::ifstream dic2("simbols.dic", std::ifstream::binary);
+
+     
      int num = atoi(argv[1]);
      a = new char[num+1]();
      std::cout << "Arguments:"<<num<< std::endl ;
+
      for (int i = 0; i < num; i++)
      {
        a[i]='a';
@@ -51,9 +64,23 @@ int main(int argc, char**argv)
      a[num]='\0';
 
      std::cout << "Result:" << a << std::endl ;
+     char c;
+
+     while (dic.get(c))
+     {
+       //       while (dic.get
+       for (int j = 0; j < num; j++)
+       {
+       	 std::cout << "Result"<<j<<"-"<<num<<":"<< strChar(a, j, c) << std::endl ;
+       }
+     }
+     dic.seekg(0, dic.beg);
+
+
      delete [] a;
+     dic.close();
+     dic2.close();
    }
-   
-   
+  
    return 0;
 }
