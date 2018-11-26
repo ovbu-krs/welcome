@@ -45,7 +45,6 @@ void do_this(int word_length, int dic_length, int*a, int cur)
 	//	std::cout<<"exit"<<std::endl;
 	return;
       }
-
     
     a[cur]++;
     if(a[cur]>=dic_length)
@@ -72,25 +71,18 @@ int main(int argc, char**argv)
 {
   int* pos_mas;
 
-  //Prints welcome message...
-  //Prints arguments...
   if (argc > 2 && (int)argv[1]>0 && (int)argv[2]>=0)
    {
-     
      int num = atoi(argv[1]);
      int full_check= atoi(argv[2]);
      pos_mas = new int[num];
      std::cout << "Length word:" << num << std::endl ;
-
- 
 
      for(int i=0; i<num; i++)
        if(full_check==0)
 	 pos_mas[i] = 0;
        else
 	 pos_mas[i] = -1;
-
-       
 
      print_this(pos_mas, num-1);
      
@@ -107,76 +99,7 @@ int main(int argc, char**argv)
      else
        do_this(num-1,length, pos_mas, num-1);
 
-
    }
     delete[] pos_mas;
    return 0;
 }
-
-
-/*
-{
-
-    std::ifstream dic(dic_name, std::ifstream::binary);
-
-    int *aa = new int[razr]();
-    char c;
-    char f_c;
-    dic.seekg(0, dic.beg);
-    dic.get(f_c);
-    dic.seekg(0, dic.end);
-    int length=dic.tellg();
-    dic.seekg(0, dic.beg);
-
-    std::cout << "Start: "<<cur_razr<<"/"<<razr<<" " << a << std::endl ;
-    std::cout << "Length dic:" << length << std::endl ;
-
-
-    //if (init==true)
-    //{
-      	  //init first simbol
-	  for(int l = razr; l>=cur_razr; l--)
-	  {
-	    strChar(a, l, f_c);
-	    aa[l] = 0;
-	  }
-	  std::cout << "init: "<<a << std::endl ;
-	  //}
-
-
-
-    for(int j = razr; j >= 0; j--)
-    {
-
-	for(int i = razr; i>=j; i--)
-	{
-	  for(; aa[i]<length; aa[i]++)
-	  {
-	    dic.seekg(aa[i], dic.beg);
-	    dic.get(c);
- 	    std::cout << "Result"<<j<<"-"<<i<<"-"<<aa[i]<<":"<< strChar(a, i, c) << std::endl ;
-	  }
-	  strChar(a, i, f_c);
-	  if(i!=0)
-	  {
-	    aa[i-1]++;
-            for(int ii=razr; ii>i; ii--)
-	    {
-	      aa[ii]=0;
-	    }
-	  }   
-	    
-	  if(i!=0)
-          {
-
-	    do_this(i-1, razr, dic_name, a, false);
-          }
-	}
-	
-    }
-   dic.close();
-
-   return a;
-}
-
- */
