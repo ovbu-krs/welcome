@@ -1,86 +1,182 @@
-/*
- * Copyright (c) 2009-2010, Oracle and/or its affiliates. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * * Redistributions of source code must retain the above copyright notice,
- *   this list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * * Neither the name of Oracle nor the names of its contributors
- *   may be used to endorse or promote products derived from this software without
- *   specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-
 #include <iostream>
 #include <stdio.h>
 #include <fstream>
 
-char* strChar(char *_in, int _pos, char _ch)
+char* strChar(char*_in, int _pos, char _ch)
 {
   _in[_pos]=_ch;
   return _in;
 }
 
 
+void print_this(int*mas, int mas_length)
+{
+  /*
+  std::cout << "Result: ";
+  for(int i=0; i<=mas_length; i++)
+    std::cout<<mas[i]<<":";
+  std::cout<< std::endl;
+  */
+  std::ifstream dic("simbols.dic", std::ifstream::binary);
+
+  std::cout << "Word: ";
+  for(int i=0; i<=mas_length; i++)
+  {
+     char f_c;
+     if(mas[i]>=0)
+     {
+       dic.seekg(mas[i], dic.beg);
+       dic.get(f_c);
+       std::cout<<f_c;
+     }
+  }
+  std::cout<<std::endl;
+  
+
+  return;
+}
+
+void do_this(int word_length, int dic_length, int*a, int cur)
+{
+  //  std::cout<<"cur: "<<cur<<std::endl;
+
+    if(cur<0)
+      {
+	//	std::cout<<"exit"<<std::endl;
+	return;
+      }
+
+    
+    a[cur]++;
+    if(a[cur]>=dic_length)
+    {
+      // std::cout<<"up"<<std::endl;
+      for(int i=cur; i<=word_length;i++)
+      {
+	a[i]=0;
+      }
+      do_this(word_length, dic_length, a, cur-1);
+     
+    }
+    else
+    {
+      print_this(a, word_length);
+      do_this(word_length, dic_length, a, word_length);
+    }
+      
+  return;
+}
+
+
 int main(int argc, char**argv)
 {
+  int* pos_mas;
+
   //Prints welcome message...
-  char *a;
-
-
   //Prints arguments...
-  if (argc > 1 && (int)argv[1]>0)
+  if (argc > 2 && (int)argv[1]>0 && (int)argv[2]>=0)
    {
-     std::ifstream dic("simbols.dic", std::ifstream::binary);
-     std::ifstream dic2("simbols.dic", std::ifstream::binary);
-
      
      int num = atoi(argv[1]);
-     a = new char[num+1]();
-     std::cout << "Arguments:"<<num<< std::endl ;
+     int full_check= atoi(argv[2]);
+     pos_mas = new int[num];
+     std::cout << "Length word:" << num << std::endl ;
 
-     for (int i = 0; i < num; i++)
-     {
-       a[i]='a';
-     }
-     a[num]='\0';
+ 
 
-     std::cout << "Result:" << a << std::endl ;
-     char c;
+     for(int i=0; i<num; i++)
+       if(full_check==0)
+	 pos_mas[i] = 0;
+       else
+	 pos_mas[i] = -1;
 
-     while (dic.get(c))
-     {
-       //       while (dic.get
-       for (int j = 0; j < num; j++)
-       {
-       	 std::cout << "Result"<<j<<"-"<<num<<":"<< strChar(a, j, c) << std::endl ;
-       }
-     }
+       
+
+     print_this(pos_mas, num-1);
+     
+     std::ifstream dic("simbols.dic", std::ifstream::binary);
+     dic.seekg(0, dic.beg);
+     dic.seekg(0, dic.end);
+     int length=dic.tellg();
      dic.seekg(0, dic.beg);
 
+     std::cout << "Length dic:" << length << std::endl ;
+     
+     if(full_check == 0)
+       do_this(num-1,length, pos_mas, 0);
+     else
+       do_this(num-1,length, pos_mas, num-1);
 
-     delete [] a;
-     dic.close();
-     dic2.close();
+
    }
-  
+    delete[] pos_mas;
    return 0;
 }
+
+
+/*
+{
+
+    std::ifstream dic(dic_name, std::ifstream::binary);
+
+    int *aa = new int[razr]();
+    char c;
+    char f_c;
+    dic.seekg(0, dic.beg);
+    dic.get(f_c);
+    dic.seekg(0, dic.end);
+    int length=dic.tellg();
+    dic.seekg(0, dic.beg);
+
+    std::cout << "Start: "<<cur_razr<<"/"<<razr<<" " << a << std::endl ;
+    std::cout << "Length dic:" << length << std::endl ;
+
+
+    //if (init==true)
+    //{
+      	  //init first simbol
+	  for(int l = razr; l>=cur_razr; l--)
+	  {
+	    strChar(a, l, f_c);
+	    aa[l] = 0;
+	  }
+	  std::cout << "init: "<<a << std::endl ;
+	  //}
+
+
+
+    for(int j = razr; j >= 0; j--)
+    {
+
+	for(int i = razr; i>=j; i--)
+	{
+	  for(; aa[i]<length; aa[i]++)
+	  {
+	    dic.seekg(aa[i], dic.beg);
+	    dic.get(c);
+ 	    std::cout << "Result"<<j<<"-"<<i<<"-"<<aa[i]<<":"<< strChar(a, i, c) << std::endl ;
+	  }
+	  strChar(a, i, f_c);
+	  if(i!=0)
+	  {
+	    aa[i-1]++;
+            for(int ii=razr; ii>i; ii--)
+	    {
+	      aa[ii]=0;
+	    }
+	  }   
+	    
+	  if(i!=0)
+          {
+
+	    do_this(i-1, razr, dic_name, a, false);
+          }
+	}
+	
+    }
+   dic.close();
+
+   return a;
+}
+
+ */
