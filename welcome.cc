@@ -75,16 +75,9 @@ int main(int argc, char**argv)
    {
      int num = atoi(argv[1]);
      int full_check= atoi(argv[2]);
+     int ini_num=-1;
      pos_mas = new int[num];
-     std::cout << "Length word:" << num << std::endl ;
-
-     for(int i=0; i<num; i++)
-       if(full_check==0)
-	 pos_mas[i] = 0;
-       else
-	 pos_mas[i] = -1;
-
-     print_this(pos_mas, num-1);
+     
      
      std::ifstream dic("simbols.dic", std::ifstream::binary);
      dic.seekg(0, dic.beg);
@@ -93,6 +86,25 @@ int main(int argc, char**argv)
      dic.seekg(0, dic.beg);
 
      std::cout << "Length dic:" << length << std::endl ;
+
+     if(full_check==0)
+     {
+         std::cout << "Length word:" << num << std::endl ;
+	 ini_num=0;
+     }
+     else
+     {
+         std::cout << "Length word: 1-" << num << std::endl ;
+     }
+
+     for(int i=num-1; i>0; i--)
+	 pos_mas[i] = ini_num;
+     pos_mas[0]=-1;
+
+
+     //print_this(pos_mas, num-1);
+
+
      
      if(full_check == 0)
        do_this(num-1,length, pos_mas, 0);
