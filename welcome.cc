@@ -111,7 +111,9 @@ int main(int argc, char**argv)
      else
        do_this(num-1,length, pos_mas, num-1);
 
+
+     delete[] pos_mas;
    }
-    delete[] pos_mas;
-   return 0;
+
+  return 0;
 }
