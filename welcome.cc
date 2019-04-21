@@ -113,6 +113,9 @@ int main(int argc, char**argv)
 
 
      delete[] pos_mas;
+
+
+     
    }
 
   return 0;
